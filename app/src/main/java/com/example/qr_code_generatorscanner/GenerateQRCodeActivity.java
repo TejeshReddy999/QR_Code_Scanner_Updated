@@ -4,12 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Point;
-import android.hardware.input.InputManager;
 import android.os.Bundle;
-import android.view.Display;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,11 +19,15 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import java.util.Objects;
+
 public class GenerateQRCodeActivity extends AppCompatActivity {
 
     private TextView qrCodeTextView;
     private ImageView qrCodeImageView;
     private TextInputEditText qrCodeTextInputEditText;
+    private TextInputEditText qrCodeTextInputEditText1;
+    private TextInputEditText qrCodeTextInputEditText2;
     private Button qrCodeGeneratorButton;
 
     @Override
@@ -37,12 +37,14 @@ public class GenerateQRCodeActivity extends AppCompatActivity {
         qrCodeTextView = findViewById(R.id.frameText);
         qrCodeImageView = findViewById(R.id.QRCodeImg);
         qrCodeTextInputEditText = findViewById(R.id.inputData);
+        qrCodeTextInputEditText1 = findViewById(R.id.inputData1);
+        qrCodeTextInputEditText2 = findViewById(R.id.inputData2);
         qrCodeGeneratorButton = findViewById(R.id.QRCodeGeneratorBtn);
 
         qrCodeGeneratorButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String data = qrCodeTextInputEditText.getText().toString().trim();
+                String data = Objects.requireNonNull(getConcatinatedText()).toString().trim();
                 if(data.isEmpty()){
                     Toast.makeText(GenerateQRCodeActivity.this, "Please Enter Some Data to Generate QR Code", Toast.LENGTH_SHORT).show();
                 }else{
@@ -80,5 +82,19 @@ public class GenerateQRCodeActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private StringBuilder getConcatinatedText() {
+        StringBuilder concatinatedString = new StringBuilder();
+        concatinatedString.append("##");
+        concatinatedString.append(qrCodeTextInputEditText.getText());
+        concatinatedString.append("@@");
+        concatinatedString.append("##");
+        concatinatedString.append(qrCodeTextInputEditText1.getText());
+        concatinatedString.append("@@");
+        concatinatedString.append("##");
+        concatinatedString.append(qrCodeTextInputEditText2.getText());
+        concatinatedString.append("@@");
+        return concatinatedString;
     }
 }

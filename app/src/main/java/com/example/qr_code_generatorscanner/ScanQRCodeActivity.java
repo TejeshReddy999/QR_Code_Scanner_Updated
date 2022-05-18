@@ -21,6 +21,7 @@ public class ScanQRCodeActivity extends AppCompatActivity {
 
     private ScannerLiveView scannerLiveView;
     private TextView scannedTextView;
+    private ShowDataFragment showDataFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,14 @@ public class ScanQRCodeActivity extends AppCompatActivity {
 
             @Override
             public void onCodeScanned(String data) {
+                /*Bundle bundle = new Bundle();
+                bundle.putString("concatinatedString",data);
+                FrameLayout frameLayout = new FrameLayout(getApplicationContext());
+                FragmentManager manager = getSupportFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                transaction.add(frameLayout.getId(),showDataFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();*/
                 scannedTextView.setText(data);
             }
         });
